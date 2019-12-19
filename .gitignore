@@ -1,2 +1,12 @@
 .idea
 .idea/*
+
+.terraform
+.terraform/*
+.terraform/
+
+tf_commands.txt
+
+/infrastructure/staging/.terraform/plugins/linux_amd64/terraform-provider-aws_v2.42.0_x4
+/infrastructure/staging/.terraform/plugins/linux_amd64/lock.json
+/infrastructure/staging/.terraform/modules/modules.json

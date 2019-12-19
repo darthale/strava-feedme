@@ -6,7 +6,7 @@ variable appname {}
 variable "state_bucket" {}
 variable "state_file" {}
 
-variable "lambda_artifacts" {}
+/*variable "lambda_artifacts" {}
 variable "lambda_datapull_file" {}
 
 # incremental lambda version
@@ -23,4 +23,4 @@ variable "superset_task_name" {}
 variable "max_superset_tasks" {}
 
 variable "image_name" {}
-variable "image_tag" {}
+variable "image_tag" {} */
