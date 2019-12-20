@@ -22,6 +22,9 @@
 .idea/**/gradle.xml
 .idea/**/libraries
 
+# General
+./idea/*
+
 # CMake
 cmake-build-*/
 
