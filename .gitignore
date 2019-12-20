@@ -23,7 +23,7 @@
 .idea/**/libraries
 
 # General
-./idea/*
+./idea/**/*
 
 # CMake
 cmake-build-*/
