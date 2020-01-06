@@ -6,3 +6,5 @@ appname = "strava-feedme"
 state_bucket = "strava-feedme-remotestate"
 state_file = "state/env=staging/strava_feedme_eu-west-1_staging.tfstate"
 
+image_name = "apache-superset"
+image_tag = "latest"

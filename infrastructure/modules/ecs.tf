@@ -77,3 +77,40 @@ resource "aws_iam_role_policy" "strava_feedme_ecs_execution_role_policy" {
 }
 EOF
 }
+
+/*
+1) Login to ECR
+2) Build the image locally
+3) Tag and push to ECR
+4) Get the repo URL + image tag
+5) Use the info @4 to update the docker compose file adding the image tag
+6) esc-cli compose up from terraform
+*/
+
+/*
+  ECR deploy
+
+
+resource "null_resource" "strava_feedme_ecr_deploy" {
+  # this a temporary deploy, just to get things up and running
+
+  triggers = {
+    new_deploy = "$(timestamp())"
+  }
+
+  provisioner "local-exec" {
+    command = <<EOT
+      $(aws ecr get-login --no-include-email --region ${var.region}) && docker build -t ${var.image_name} ../../container/. && docker tag ${var.image_name}:${var.image_tag} ${aws_ecr_repository.strava_feedme_ecr_repo.repository_url} && docker push ${aws_ecr_repository.strava_feedme_ecr_repo.repository_url}
+  EOT
+  }
+
+  depends_on = ["aws_ecr_repository.strava_feedme_ecr_repo"]
+}*/
+
+
+/*
+Try with:
+docker build -t IMAGE_NAME .
+docker tag IMAGE_NAME:latest 361964164915.dkr.ecr.eu-west-1.amazonaws.com/strava-feedme-strava-feedme-images-repository-staging:latest
+docker push 361964164915.dkr.ecr.eu-west-1.amazonaws.com/strava-feedme-strava-feedme-images-repository-staging:latest
+*/

@@ -20,7 +20,7 @@ variable "lambda_memory_size" {}
 variable "superset_task_memory" {}
 variable "superset_task_cpu" {}
 variable "superset_task_name" {}
-variable "max_superset_tasks" {}
+variable "max_superset_tasks" {}*/
 
 variable "image_name" {}
-variable "image_tag" {} */
+variable "image_tag" {}

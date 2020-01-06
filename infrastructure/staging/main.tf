@@ -23,4 +23,7 @@ module "infrastructure" {
   bucket_name = "${var.bucket_name}"
 
   appname = "${var.appname}"
+
+  image_name = "${var.image_name}"
+  image_tag = "${var.image_tag}"
 }
