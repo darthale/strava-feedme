@@ -1,4 +1,4 @@
-CREATE TABLE strava.main_activity (
+CREATE TABLE feedme.main_activity (
 
     athlete_id BIGINT,
     platform_id VARCHAR(20),
@@ -12,8 +12,8 @@ CREATE TABLE strava.main_activity (
     activity_id BIGINT,
     external_id VARCHAR(255),
     upload_id BIGINT,
-    start_date 2018-08-31T16 55 04Z,
-    start_date_local 2018-08-31T17 55 04Z,
+    start_date TIMESTAMP,
+    start_date_local TIMESTAMP,
     timezone VARCHAR(100),
     utc_offset DECIMAL,
     start_lat DECIMAL,
