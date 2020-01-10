@@ -139,8 +139,8 @@ def main():
         keys_to_process = retrieve_s3_keys(s3_client)
         logger.info(f'{len(keys_to_process)} activities to process')
 
-        with open(os.path.join('data', 'merged_activities.csv'), mode='w', encoding='utf-8') as merged_activities:
-            merged_csv_writer = csv.writer(merged_activities, delimiter=',', quotechar="'", quoting=csv.QUOTE_MINIMAL)
+        with open(os.path.join('data', 'merged_activities.csv'), mode='w', newline='\n', encoding='utf-8') as merged_activities:
+            merged_csv_writer = csv.writer(merged_activities, delimiter='|', quotechar='"', quoting=csv.QUOTE_MINIMAL)
             merged_csv_writer.writerow(header)
 
             for s3_key in keys_to_process:
