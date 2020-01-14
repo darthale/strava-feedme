@@ -12,7 +12,7 @@ resource "aws_s3_bucket" "com-strava-feedme" {
   }
 
   tags = {
-    Project = "${var.appname}-${var.env}"
+    Project = "${var.appname}-${var.environment}"
     Team    = "Personal_AG"
   }
 }

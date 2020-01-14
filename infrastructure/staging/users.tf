@@ -6,7 +6,7 @@ resource "aws_iam_user" "rw-com-strava-feedme-user-ag" {
 
 resource "aws_iam_user_policy" "rw-com-strava-feedme-policy-ag" {
   name = "rw-${var.appname}-policy-ag"
-  user = "${aws_iam_user.rw-com-strava-feedme-user-ag.name}"
+  user = aws_iam_user.rw-com-strava-feedme-user-ag.name
 
   policy = <<EOF
 {
@@ -23,16 +23,18 @@ resource "aws_iam_user_policy" "rw-com-strava-feedme-policy-ag" {
   ]
 }
 EOF
+
 }
 
 resource "aws_iam_access_key" "rw-com-strava-feedme-access_key" {
-  user = "${aws_iam_user.rw-com-strava-feedme-user-ag.name}"
+  user = aws_iam_user.rw-com-strava-feedme-user-ag.name
 }
 
 output "rw_com-strava-feedme-access_key_id" {
-  value = "${aws_iam_access_key.rw-com-strava-feedme-access_key.id}"
+  value = aws_iam_access_key.rw-com-strava-feedme-access_key.id
 }
 
 output "rw_com-strava-feedme-secret_access_key" {
-  value = "${aws_iam_access_key.rw-com-strava-feedme-access_key.secret}"
+  value = aws_iam_access_key.rw-com-strava-feedme-access_key.secret
 }
+
