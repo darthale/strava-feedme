@@ -6,7 +6,7 @@ RDS
 resource "aws_db_subnet_group" "rds_subnet_group" {
   name        = "${var.environment}-rds-subnet-group"
   description = "RDS subnet group"
-  subnet_ids  = ["${aws_subnet.private_subnet.*.id}"]
+  subnet_ids  = ["${aws_subnet.private_subnet.0.id}", "${aws_subnet.private_subnet.1.id}"]
 
   tags = {
     Environment = "${var.environment}"
@@ -64,7 +64,7 @@ resource "aws_db_instance" "rds" {
   identifier             = "${var.environment}-database"
   allocated_storage      = "${var.allocated_storage}"
   engine                 = "postgres"
-  engine_version         = "9.6.6"
+  engine_version         = "11.5"
   instance_class         = "${var.instance_class}"
   multi_az               = "${var.multi_az}"
   name                   = "${var.database_name}"
@@ -73,7 +73,6 @@ resource "aws_db_instance" "rds" {
   db_subnet_group_name   = "${aws_db_subnet_group.rds_subnet_group.id}"
   vpc_security_group_ids = ["${aws_security_group.rds_sg.id}"]
   skip_final_snapshot    = true
-  snapshot_identifier    = "rds-${var.environment}-snapshot"
 
   tags = {
     Environment = "${var.environment}"

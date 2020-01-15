@@ -1,0 +1,48 @@
+[
+  {
+    "name": "metabase",
+    "image": "${image}",
+    "portMappings": [
+      {
+        "containerPort": 3000,
+        "hostPort": 3000
+      }
+    ],
+    "memory": 300,
+    "networkMode": "awsvpc",
+    "logConfiguration": {
+      "logDriver": "awslogs",
+      "options": {
+        "awslogs-group": "${log_group}",
+        "awslogs-region": "eu-west-1",
+        "awslogs-stream-prefix": "strava"
+      }
+    },
+    "environment": [
+      {
+        "name": "RAILS_ENV",
+        "value": "production"
+      },
+      {
+        "name": "DATABASE_URL",
+        "value": "${database_url}"
+      },
+      {
+        "name": "SECRET_KEY_BASE",
+        "value": "${secret_key_base}"
+      },
+      {
+        "name": "PORT",
+        "value": "80"
+      },
+      {
+        "name": "RAILS_LOG_TO_STDOUT",
+        "value": "true"
+      },
+      {
+        "name": "RAILS_SERVE_STATIC_FILES",
+        "value": "true"
+      }
+    ]
+  }
+]
