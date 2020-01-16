@@ -13,7 +13,6 @@ resource "aws_ecr_repository" "strava_feedme_ecr_repo" {
 /*
   Cloudwatch logs group
 */
-
 resource "aws_cloudwatch_log_group" "strava_feedme_logs" {
   name = "strava-feedme-ecs-logs-${var.environment}"
 
@@ -23,6 +22,29 @@ resource "aws_cloudwatch_log_group" "strava_feedme_logs" {
   }
 }
 
+
+/*
+  ECR deploy
+resource "null_resource" "stravafeedme_ecr_deploy" {
+  # this a temporary deploy, just to get things up and running
+
+  triggers = {
+    new_deploy = "$(timestamp())"
+  }
+
+  provisioner "local-exec" {
+    command = <<EOT
+      $(aws ecr get-login --no-include-email --region ${var.region}) \
+      && docker pull metabase/metabase \
+      && docker tag  metabase/metabase:${var.image_tag} ${aws_ecr_repository.strava_feedme_ecr_repo.repository_url} \
+      && docker push ${aws_ecr_repository.strava_feedme_ecr_repo.repository_url}
+  EOT
+  }
+
+  depends_on = ["aws_ecr_repository.strava_feedme_ecr_repo"]
+}
+*/
+
 /*====
 ECS task definitions
 ======*/
@@ -31,7 +53,7 @@ ECS task definitions
 data "template_file" "metabase_task" {
   template = "${file("${path.module}/tasks/metabase_task_definition.json")}"
 
-  vars {
+  vars = {
     image           = "${aws_ecr_repository.strava_feedme_ecr_repo.repository_url}"
     # secret_key_base = "${var.secret_key_base}"
     database_type   = "postgres"
@@ -39,7 +61,7 @@ data "template_file" "metabase_task" {
     database_port   = 5432
     database_username = "${var.database_username}"
     database_password = "${var.database_password}"
-    database_host   = "${aws_db_instance.rds.endpoint}"
+    database_host   = "${aws_db_instance.rds.address}"
     log_group       = "${aws_cloudwatch_log_group.strava_feedme_logs.name}"
   }
 }
@@ -49,8 +71,8 @@ resource "aws_ecs_task_definition" "metabase" {
   container_definitions    = "${data.template_file.metabase_task.rendered}"
   requires_compatibilities = ["FARGATE"]
   network_mode             = "awsvpc"
-  cpu                      = "256"
-  memory                   = "512"
+  cpu                      = "2048"
+  memory                   = "4096"
   execution_role_arn       = "${aws_iam_role.strava_feedme_ecs_execution_role.arn}"
   task_role_arn            = "${aws_iam_role.strava_feedme_ecs_execution_role.arn}"
 }
@@ -85,7 +107,8 @@ resource "aws_security_group" "web_inbound_sg" {
     from_port   = 80
     to_port     = 80
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    # cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = ["${var.http_inbound_eni_ip}"]
   }
 
   ingress {
@@ -102,7 +125,7 @@ resource "aws_security_group" "web_inbound_sg" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  tags {
+  tags = {
     Name = "${var.environment}-web-inbound-sg"
   }
 }
@@ -265,7 +288,7 @@ resource "aws_security_group" "ecs_service" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  tags {
+  tags = {
     Name        = "${var.environment}-ecs-service-sg"
     Environment = "${var.environment}"
   }
@@ -274,6 +297,9 @@ resource "aws_security_group" "ecs_service" {
 /* Simply specify the family to find the latest ACTIVE revision in that family */
 data "aws_ecs_task_definition" "metabase" {
   task_definition = "${aws_ecs_task_definition.metabase.family}"
+
+    depends_on = ["data.template_file.metabase_task"]
+
 }
 
 resource "aws_ecs_service" "metabase" {
@@ -290,10 +316,10 @@ resource "aws_ecs_service" "metabase" {
 
   load_balancer {
     target_group_arn = "${aws_alb_target_group.alb_target_group.arn}"
-    container_name   = "web"
-    container_port   = "80"
+    container_name   = "metabase"
+    container_port   = "3000"
   }
 
-  depends_on = ["aws_alb_target_group.alb_target_group", "aws_iam_role_policy.ecs_service_role_policy"]
+  depends_on = ["aws_alb_target_group.alb_target_group", "aws_iam_role_policy.ecs_service_role_policy", "aws_ecs_task_definition.metabase"]
 }
 
