@@ -5,8 +5,6 @@ import json
 import argparse
 import logging
 import boto3
-from stravalib.client import Client
-import requests
 
 FORMAT = '%(funcName)1s - # %(lineno)s - %(message)s'
 logging.basicConfig(format=FORMAT)
