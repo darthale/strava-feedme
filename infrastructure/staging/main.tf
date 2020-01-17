@@ -24,9 +24,18 @@ module "infrastructure" {
 
   image_name           = var.image_name
   image_tag            = var.image_tag
+
   public_subnets_cidr  = var.public_subnets_cidr
   private_subnets_cidr = var.private_subnets_cidr
   availability_zones   = var.availability_zones
   vpc_cidr             = var.vpc_cidr
+  http_inbound_eni_ip  = var.http_inbound_eni_ip
+
+  allocated_storage = var.allocated_storage
+  instance_class = var.instance_class
+
+  database_name = var.database_name
+  database_username = var.database_username
+  database_password = var.database_password
 }
 

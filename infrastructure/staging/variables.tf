@@ -90,3 +90,7 @@ variable "database_username" {
 variable "database_password" {
   description = "The password of the database"
 }
+
+variable "http_inbound_eni_ip" {
+  description = "Inbound http connections from eni"
+}
