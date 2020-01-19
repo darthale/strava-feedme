@@ -30,6 +30,7 @@ module "infrastructure" {
   availability_zones   = var.availability_zones
   vpc_cidr             = var.vpc_cidr
   http_inbound_eni_ip  = var.http_inbound_eni_ip
+  home_ip_address = var.home_ip_address
 
   allocated_storage = var.allocated_storage
   instance_class = var.instance_class
