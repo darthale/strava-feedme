@@ -68,3 +68,7 @@ variable "database_password" {
 variable "http_inbound_eni_ip" {
   description = "Inbound http connections from eni"
 }
+
+variable "home_ip_address" {
+  description = "home ip address"
+}

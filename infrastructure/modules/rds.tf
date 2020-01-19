@@ -48,8 +48,9 @@ resource "aws_security_group" "rds_sg" {
       from_port = 5432
       to_port   = 5432
       protocol  = "tcp"
-      security_groups = ["${aws_security_group.db_access_sg.id}"]
+      security_groups = ["${aws_security_group.db_access_sg.id}", "${aws_security_group.bastion_security_group.id}"]
   }
+
 
   // outbound internet access
   egress {
@@ -65,6 +66,7 @@ resource "aws_db_instance" "rds" {
   allocated_storage      = "${var.allocated_storage}"
   engine                 = "postgres"
   engine_version         = "11.5"
+  publicly_accessible    = true
   instance_class         = "${var.instance_class}"
   multi_az               = "${var.multi_az}"
   name                   = "${var.database_name}"
