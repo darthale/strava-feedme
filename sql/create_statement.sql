@@ -55,5 +55,6 @@ CREATE TABLE feedme.main_activity (
    perceived_exertion VARCHAR(100),
    prefer_perceived_exertion VARCHAR(10),
    device_name VARCHAR(100),
-   embed_token VARCHAR(255)
+   embed_token VARCHAR(255),
+   cnt INTEGER
 )

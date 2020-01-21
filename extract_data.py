@@ -11,7 +11,7 @@ logging.basicConfig(format=FORMAT)
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
-DEFAULT_BUCKET = 'eni-demo-rawdata'
+DEFAULT_BUCKET = 'strava-feedme'
 DEFAULT_REGION = 'eu-west-1'
 
 
@@ -84,7 +84,8 @@ def extract_data(s3_client, keys, activity_key_name):
         wanted_data['perceived_exertion'],
         wanted_data['prefer_perceived_exertion'],
         wanted_data['device_name'],
-        wanted_data['embed_token']
+        wanted_data['embed_token'],
+        1
     ]
 
     return extracted_data

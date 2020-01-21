@@ -115,5 +115,6 @@
     "perceived_exertion",
     "prefer_perceived_exertion",
     "device_name",
-    "embed_token"]
+    "embed_token",
+    "cnt"]
 }

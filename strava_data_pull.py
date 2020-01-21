@@ -4,8 +4,9 @@ import json
 import argparse
 import logging
 import boto3
-from stravalib.client import Client
+# from stravalib.client import Client
 import requests
+from datetime import datetime
 
 FORMAT = '%(funcName)1s - # %(lineno)s - %(message)s'
 logging.basicConfig(format=FORMAT)
@@ -22,17 +23,25 @@ BASE_URL = 'https://www.strava.com/api/v3'
 s3_client = boto3.client('s3', region_name=AWS_REGION)
 
 
+def convert_ts_to_epoch(ts_to_convert):
+    dt_ts = datetime.strptime(ts_to_convert,"%Y%m%d")
+    epoch_ts = str(dt_ts.timestamp()).split(".")[0]
+
+    return epoch_ts
+
+
 def list_activities(before_timestamp=None, after_timestamp=None, access_token=None):
 
     timestamp_filter = ''
     if before_timestamp and after_timestamp:
-        timestamp_filter = f'before={before_timestamp}&after={after_timestamp}'
+        timestamp_filter = f'before={convert_ts_to_epoch(before_timestamp)}&after={convert_ts_to_epoch(after_timestamp)}'
     elif before_timestamp:
-        timestamp_filter = f'before={before_timestamp}'
+        timestamp_filter = f'before={convert_ts_to_epoch(before_timestamp)}'
     elif after_timestamp:
-        timestamp_filter = f'after={after_timestamp}'
+        timestamp_filter = f'after={convert_ts_to_epoch(after_timestamp)}'
 
     logger.info(f'Listing activities between in [ {before_timestamp}, {after_timestamp} ]')
+    logger.info(f'{convert_ts_to_epoch(after_timestamp)}, {convert_ts_to_epoch(before_timestamp)}')
 
     activities_url = f'{BASE_URL}/athlete/activities?access_token={access_token}&{timestamp_filter}&per_page=200'
     logger.info(f'{activities_url}')
