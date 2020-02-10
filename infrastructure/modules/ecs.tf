@@ -71,8 +71,8 @@ resource "aws_ecs_task_definition" "metabase" {
   container_definitions    = "${data.template_file.metabase_task.rendered}"
   requires_compatibilities = ["FARGATE"]
   network_mode             = "awsvpc"
-  cpu                      = "2048"
-  memory                   = "4096"
+  cpu                      = "512"
+  memory                   = "1024"
   execution_role_arn       = "${aws_iam_role.strava_feedme_ecs_execution_role.arn}"
   task_role_arn            = "${aws_iam_role.strava_feedme_ecs_execution_role.arn}"
 }

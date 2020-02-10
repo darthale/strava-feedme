@@ -1,8 +1,8 @@
 terraform {
   backend "s3" {
-    bucket = "$${var.state_bucket}"
-    key    = "$${var.state_file}"
-    region = "$${var.region}"
+    bucket = "${var.state_bucket}"
+    key    = "${var.state_file}"
+    region = "${var.region}"
   }
 }
 
